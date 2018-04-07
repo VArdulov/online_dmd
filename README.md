@@ -11,7 +11,7 @@ Please note I hold no affiliations to any of the authors above, this is simply m
 
 Install instructions:
 ~~~
-    git clone https://github.com/VArdulov/online_dmd/online_dmd.git
+    git clone https://github.com/VArdulov/online_dmd.git
     cd online_dmd
     pip install .
 ~~~
