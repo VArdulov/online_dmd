@@ -3,6 +3,8 @@
 
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Django.svg)
 
+![Project - Version](https://img.shields.io/badge/version-0.1--alpha0-blue.svg)
+
 ### By: Victor Ardulov
 
 [Dynamic Mode Decomposition](https://hal-polytechnique.archives-ouvertes.fr/hal-01020654/document) is a powerful data processing tool that allows for dynamical systems modeling by using a numerical and computational approximation of the Koopman Opertator. This library implements import improvements in the use of these algorithms for real time dynamical system adaptation as presented in [Zhang et al.](https://arxiv.org/abs/1707.02876).
