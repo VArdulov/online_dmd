@@ -1,8 +1,6 @@
 # Online DMD
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 ![PyPI - Python Version](https://img.shields.io/badge/python-3.6-blue.svg)
-
 ![Project - Version](https://img.shields.io/badge/version-0.1--alpha0-blue.svg)
 
 ### By: Victor Ardulov
