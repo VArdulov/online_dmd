@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.linalg as lin
 
-from online import OnlineDMD
+from .online import OnlineDMD
 
 class WindowedDMD(OnlineDMD):
 
