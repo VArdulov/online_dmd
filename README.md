@@ -10,11 +10,11 @@
 Please note I hold no affiliations to any of the authors above, this is simply my interpretation and implementation of the algorithms presented in their works.
 
 Install instructions:
-`git clone https://github.com/VArdulov/online_dmd/online_dmd.git
- cd online_dmd
- pip install .
-`
-
+~~~
+    git clone https://github.com/VArdulov/online_dmd/online_dmd.git
+    cd online_dmd
+    pip install .
+~~~
 ## To-Do:
  * Go into more detail about the exact implementation and usage.
 
