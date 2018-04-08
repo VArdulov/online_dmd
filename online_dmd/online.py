@@ -27,7 +27,7 @@ class OnlineDMD:
         # self.A_k.shape == (n, m)
         self.A_k = np.matmul(lin.pinv(X), Y)
         # self.P_k.shape == (n, n)
-        self.P_k = np.invert(np.matmul(X.T, X))
+        self.P_k = lin.inv(np.matmul(X.T, X))
         self.iterations += 1
 
 

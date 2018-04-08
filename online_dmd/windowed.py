@@ -12,7 +12,7 @@ class WindowedDMD(OnlineDMD):
         self.w = window
         self.X_window = None
         self.Y_window = None
-        self.C_inv = np.invert(np.diag([-1, 1]))
+        self.C_inv = lin.inv(np.diag([-1, 1]))
 
     # n - number of state features (columns in X)
     # m - number of observational features (columns in Y)
@@ -41,9 +41,9 @@ class WindowedDMD(OnlineDMD):
                 U = np.vstack((self.X_window[0, :], X[t]))
                 V = np.vstack((self.Y_window[0, :], Y[t]))
 
-                self.gamma = np.invert((self.C_inv + np.matmul(U, np.matmul(self.P_k, U.T))))
+                self.gamma = lin.inv((self.C_inv + np.matmul(U, np.matmul(self.P_k, U.T))))
                 self.A_k += np.matmul((V - np.matmul(U, self.A_k)).T, np.matmul(self.gamma, np.matmul(U, self.P_k))).T
-                self.P_k -= np.matmul(np.matmul(self.P_k, np.matmul(U.T, self.gamma)), np.matmul(U, self.P_k)
+                self.P_k -= np.matmul(np.matmul(self.P_k, np.matmul(U.T, self.gamma)), np.matmul(U, self.P_k))
                 self.iterations += 1
 
 class WeightedWindowedDMD(WindowedDMD):
@@ -54,7 +54,9 @@ class WeightedWindowedDMD(WindowedDMD):
 
         super(WeightedWindowedDMD, self).__init__(window=window, tol=tol, track=track)
         self.sigma = np.sqrt(weight)
-        self.C_inv = np.invert(np.diag([np.power(-weight, window-1), 1]))
+        self.C_inv = np.diag([np.power(-weight, window-1), 1])
+        print(self.C_inv.shape)
+        self.C_inv = lin.inv(self.C_inv)
         self.rho_inv = (1/weight)
 
     def initial_fit(self, X, Y):
@@ -77,8 +79,8 @@ class WeightedWindowedDMD(WindowedDMD):
                 U = np.vstack((self.X_window[0, :], X[t]))
                 V = np.vstack((self.Y_window[0, :], Y[t]))
 
-                self.gamma = np.invert((self.C_inv + np.matmul(U, np.matmul(self.P_k, U.T))))
+                self.gamma = lin.inv((self.C_inv + np.matmul(U, np.matmul(self.P_k, U.T))))
                 self.A_k += np.matmul((V - np.matmul(U, self.A_k)).T, np.matmul(self.gamma, np.matmul(U, self.P_k))).T
-                self.P_k -= np.matmul(np.matmul(self.P_k, np.matmul(U.T, self.gamma)), np.matmul(U, self.P_k)
+                self.P_k -= np.matmul(np.matmul(self.P_k, np.matmul(U.T, self.gamma)), np.matmul(U, self.P_k))
                 self.P_k *= self.rho_inv
                 self.iterations += 1
