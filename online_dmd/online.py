@@ -38,11 +38,12 @@ class OnlineDMD:
             for t in range(X.shape[0]):
                 if self.track:
                     self.history.append(self.A_k)
-                x = X[t] #x.shape == (1, n), x.T.shape == (n, 1)
-                y = Y[t] #y.shape == (1, m), y.T.shape == (m, 1)
-                self.gamma = 1 / (1 + np.matmul(x, np.matmul(self.P_k, x.T)))
+
+                x = X[t, :].reshape(1, -1) #x.shape == (1, n), x.T.shape == (n, 1)
+                y = Y[t, :].reshape(1, -1) #y.shape == (1, m), y.T.shape == (m, 1)
+                self.gamma = (1 / (1 + np.matmul(x, np.matmul(self.P_k, x.T))))[0, 0]
                 self.A_k += self.gamma * (np.matmul(self.P_k.T, np.matmul(x.T, (y - np.matmul(x, self.A_k)))))
-                self.P_k -= self.gamma * np.matmul(np.matmul(self.P_k, x.T), np.matmul(x, self.p_K))
+                self.P_k -= self.gamma * np.matmul(np.matmul(self.P_k, x.T), np.matmul(x, self.P_k))
                 self.iterations += 1
 
 
@@ -79,7 +80,7 @@ class WeightedOnlineDMD(OnlineDMD):
                     self.history.append(self.A_k)
                 x = X[t] #x.shape == (1, n), x.T.shape == (n, 1)
                 y = Y[t] #y.shape == (1, m), y.T.shape == (m, 1)
-                self.gamma = 1 / (1 + np.matmul(x, np.matmul(self.P_k, x.T)))
+                self.gamma = (1 / (1 + np.matmul(x, np.matmul(self.P_k, x.T))))[0, 0]
                 self.A_k += self.gamma * (np.matmul(self.P_k.T, np.matmul(x.T, (y - np.matmul(x, self.A_k)))))
                 self.P_k -= self.gamma * np.matmul(np.matmul(self.P_k, x.T),np.matmul(x, self.P_k))
                 self.P_k *= self.rho_inv

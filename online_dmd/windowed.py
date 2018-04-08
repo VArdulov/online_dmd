@@ -38,12 +38,15 @@ class WindowedDMD(OnlineDMD):
             for t in range(X.shape[0]):
                 if self.track:
                     self.history.append(self.A_k)
+
                 U = np.vstack((self.X_window[0, :], X[t]))
                 V = np.vstack((self.Y_window[0, :], Y[t]))
 
                 self.gamma = lin.inv((self.C_inv + np.matmul(U, np.matmul(self.P_k, U.T))))
                 self.A_k += np.matmul((V - np.matmul(U, self.A_k)).T, np.matmul(self.gamma, np.matmul(U, self.P_k))).T
                 self.P_k -= np.matmul(np.matmul(self.P_k, np.matmul(U.T, self.gamma)), np.matmul(U, self.P_k))
+                self.X_window = np.vstack((self.X_window[1:, :], X[t]))
+                self.Y_window = np.vstack((self.Y_window[1:, :], Y[t]))
                 self.iterations += 1
 
 class WeightedWindowedDMD(WindowedDMD):
@@ -54,9 +57,7 @@ class WeightedWindowedDMD(WindowedDMD):
 
         super(WeightedWindowedDMD, self).__init__(window=window, tol=tol, track=track)
         self.sigma = np.sqrt(weight)
-        self.C_inv = np.diag([np.power(-weight, window-1), 1])
-        print(self.C_inv.shape)
-        self.C_inv = lin.inv(self.C_inv)
+        self.C_inv = lin.inv(np.diag([np.power(-weight, window-1), 1]))
         self.rho_inv = (1/weight)
 
     def initial_fit(self, X, Y):
@@ -83,4 +84,6 @@ class WeightedWindowedDMD(WindowedDMD):
                 self.A_k += np.matmul((V - np.matmul(U, self.A_k)).T, np.matmul(self.gamma, np.matmul(U, self.P_k))).T
                 self.P_k -= np.matmul(np.matmul(self.P_k, np.matmul(U.T, self.gamma)), np.matmul(U, self.P_k))
                 self.P_k *= self.rho_inv
+                self.X_window = np.vstack((self.X_window[1:, :], X[t]))
+                self.Y_window = np.vstack((self.Y_window[1:, :], Y[t]))
                 self.iterations += 1
